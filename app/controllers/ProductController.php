@@ -32,10 +32,10 @@ class ProductController {
 
         if(isset($_GET['category_id']) && $_GET['category_id'] != ''){
             $products = $this->productModel->getProductsByCategory($_GET['category_id']);
-            LogHelper::log('VIEW_PRODUCTS', 'Viewed products by category: ' . $_GET['category_id']);
+            LogHelper::log('VIEW_PRODUCTS', 'Xem sản phẩm theo danh mục: ' . $_GET['category_id']);
         }else{
             $products = $this->productModel->getProducts();
-            LogHelper::log('VIEW_PRODUCTS', 'Viewed all products');
+            LogHelper::log('VIEW_PRODUCTS', 'Xem tất cả sản phẩm');
         }
 
         require_once 'app/views/product/list.php';
@@ -46,10 +46,10 @@ class ProductController {
         $product = $this->productModel->getProductById($id);
 
         if($product){
-            LogHelper::log('VIEW_PRODUCT', 'Viewed product ID: ' . $id);
+            LogHelper::log('VIEW_PRODUCT', 'Xem sản phẩm ID: ' . $id);
             include 'app/views/product/show.php';
         }else{
-            LogHelper::log('VIEW_PRODUCT_FAILED', 'Attempted to view non-existent product ID: ' . $id);
+            LogHelper::log('VIEW_PRODUCT_FAILED', 'Cố găng xem sản phẩm không tồn tại, ID: ' . $id);
             echo "Không thấy sản phẩm.";
         }
     }
@@ -100,7 +100,7 @@ class ProductController {
                 $categories = (new CategoryModel($this->db))->getCategories();
                 include 'app/views/product/add.php';
             }else{
-                LogHelper::log('ADD_PRODUCT', 'Added product: ' . $name);
+                LogHelper::log('ADD_PRODUCT', 'Thêm sản phẩm: ' . $name);
                 header('Location: /Product');
             }
         }
@@ -152,7 +152,7 @@ class ProductController {
             );
 
             if($edit){
-                LogHelper::log('UPDATE_PRODUCT', 'Updated product ID: ' . $id . ' - ' . $name);
+                LogHelper::log('UPDATE_PRODUCT', 'Cập nhật sản phẩm ID: ' . $id . ' - ' . $name);
                 header('Location: /Product');
             }else{
                 echo "Đã xảy ra lỗi khi lưu sản phẩm.";
@@ -167,7 +167,7 @@ class ProductController {
         }
 
         if($this->productModel->deleteProduct($id)){
-            LogHelper::log('DELETE_PRODUCT', 'Deleted product ID: ' . $id);
+            LogHelper::log('DELETE_PRODUCT', 'Xóa sản phẩm ID: ' . $id);
             header('Location: /Product');
         }else{
             echo "Đã xảy ra lỗi khi xóa sản phẩm.";
@@ -213,7 +213,7 @@ public function addToCart($id){
             'quantity'=>1,
             'image'=>$product->image
         ];
-        LogHelper::log('ADD_TO_CART', 'Added new product to cart ID: ' . $id);
+        LogHelper::log('ADD_TO_CART', 'Thêm sản phẩm vào giỏ hàng ID: ' . $id);
     }
 
     header('Location: /Product');
@@ -351,7 +351,7 @@ if(!isset($_SESSION['cart'][$username]) || empty($_SESSION['cart'][$username])){
 
                 $this->db->commit();
 
-                LogHelper::log('CHECKOUT', 'Order placed successfully, Order ID: ' . $order_id);
+                LogHelper::log('CHECKOUT', 'Đơn hàng được đặt thành công, Mã đơn hàng: ' . $order_id);
 
                 header('Location: /Product/orderConfirmation');
 
@@ -397,10 +397,10 @@ if(!isset($_SESSION['cart'][$username]) || empty($_SESSION['cart'][$username])){
             $query = $_GET['q'];
             $products = $this->productModel->searchProducts($query);
             $categories = (new CategoryModel($this->db))->getCategories();
-            LogHelper::log('SEARCH_PRODUCTS', 'Searched for: ' . $query);
+            LogHelper::log('SEARCH_PRODUCTS', 'Tìm kiếm: ' . $query);
             require_once 'app/views/product/list.php';
         } else {
-            LogHelper::log('SEARCH_PRODUCTS', 'Empty search query');
+            LogHelper::log('SEARCH_PRODUCTS', 'Tìm kiếm trống');
             header('Location: /Product/');
         }
     }

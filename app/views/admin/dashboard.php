@@ -3,10 +3,10 @@
 <div class="container mt-4">
     <div class="row">
         <div class="col-12">
-            <h2>Dashboard Admin</h2>
-            <p>Chào mừng quản trị viên, đây là bảng điều khiển quản lý.</p>
+            <h2>Bảng điều khển Admin</h2>
+            <p>Chào mừng quản trị viên, đây là bảng điều khển quản lý.</p>
             <a href="/Admin/security" class="btn btn-warning mb-3">
-                <i class="fa-solid fa-shield-alt"></i> Security Dashboard
+                <i class="fa-solid fa-shield-alt"></i> Bảng điều khển Bảo mật
             </a>
         </div>
     </div>
@@ -61,7 +61,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h5>Activity Logs</h5>
+                    <h5>Nhật ký hoạt động</h5>
                 </div>
                 <div class="card-body">
                     <div id="logs-container" style="max-height: 400px; overflow-y: auto;">
@@ -69,11 +69,11 @@
                             <table class="table table-striped table-sm">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th>Timestamp</th>
+                                        <th>Thời gian</th>
                                         <th>IP</th>
-                                        <th>User</th>
-                                        <th>Action</th>
-                                        <th>Details</th>
+                                        <th>Người dùng</th>
+                                        <th>Hành động</th>
+                                        <th>Chi tiết</th>
                                     </tr>
                                 </thead>
                                 <tbody id="logs-table-body">

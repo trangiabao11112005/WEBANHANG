@@ -23,7 +23,7 @@ class AdminController
         $stats = $this->getStats();
         $logs = $this->getLogs();
         require_once 'app/helpers/LogHelper.php';
-        LogHelper::log('VIEW_DASHBOARD', 'Admin viewed dashboard');
+        LogHelper::log('VIEW_DASHBOARD', 'Admin xem bảng điều khển');
         include 'app/views/admin/dashboard.php';
     }
 
@@ -145,7 +145,7 @@ class AdminController
     public function blockIp()
     {
         if (!isset($_POST['ip'])) {
-            echo json_encode(['success' => false, 'message' => 'IP not provided']);
+            echo json_encode(['success' => false, 'message' => 'IP không được cung cấp']);
             return;
         }
 
@@ -174,13 +174,13 @@ class AdminController
 
         file_put_contents($blockedFile, implode("\n", $lines) . "\n");
 
-        echo json_encode(['success' => true, 'message' => 'IP blocked']);
+        echo json_encode(['success' => true, 'message' => 'IP đã bị chặn']);
     }
 
     public function unblockIp()
     {
         if (!isset($_POST['ip'])) {
-            echo json_encode(['success' => false, 'message' => 'IP not provided']);
+            echo json_encode(['success' => false, 'message' => 'IP không được cung cấp']);
             return;
         }
 
@@ -196,13 +196,13 @@ class AdminController
             file_put_contents($blockedFile, implode("\n", $lines) . "\n");
         }
 
-        echo json_encode(['success' => true, 'message' => 'IP unblocked']);
+        echo json_encode(['success' => true, 'message' => 'IP đã bỏ chặn']);
     }
 
     public function blockAccount()
     {
         if (!isset($_POST['username'])) {
-            echo json_encode(['success' => false, 'message' => 'Username not provided']);
+            echo json_encode(['success' => false, 'message' => 'Tên tài khoản không được cung cấp']);
             return;
         }
 
@@ -231,13 +231,13 @@ class AdminController
 
         file_put_contents($blockedFile, implode("\n", $lines) . "\n");
 
-        echo json_encode(['success' => true, 'message' => 'Account blocked']);
+        echo json_encode(['success' => true, 'message' => 'Tài khoản đã bị chặn']);
     }
 
     public function unblockAccount()
     {
         if (!isset($_POST['username'])) {
-            echo json_encode(['success' => false, 'message' => 'Username not provided']);
+            echo json_encode(['success' => false, 'message' => 'Tên tài khoản không được cung cấp']);
             return;
         }
 
@@ -253,6 +253,6 @@ class AdminController
             file_put_contents($blockedFile, implode("\n", $lines) . "\n");
         }
 
-        echo json_encode(['success' => true, 'message' => 'Account unblocked']);
+        echo json_encode(['success' => true, 'message' => 'Tài khoản đã bỏ chặn']);
     }
 }

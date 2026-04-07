@@ -56,14 +56,14 @@ class AccountController
             $_SESSION['username'] = $user['username'];
             $_SESSION['role'] = $user['role'];
 
-            LogHelper::log('LOGIN', 'Successful login');
+            LogHelper::log('LOGIN', 'Đăng nhập thành công');
 
             header("Location: /");
             exit;
         }
 
         SecurityMiddleware::increaseAttempt();
-        LogHelper::log('LOGIN_FAILED', 'Failed login attempt for username: ' . $username);
+        LogHelper::log('LOGIN_FAILED', 'Cố găng đăng nhập thất bại cho tên tài khoản: ' . $username);
         echo "❌ Sai tài khoản hoặc mật khẩu";
     }
 
@@ -108,15 +108,15 @@ class AccountController
         }
 
         if (strlen($password) < 6) {
-            $errors[] = 'Password phải >= 6 ký tự';
+            $errors[] = 'Mật khẩu phải có >= 6 ký tự';
         }
 
         if ($password !== $confirmPassword) {
-            $errors[] = 'Password và Confirm Password không khớp';
+            $errors[] = 'Mật khẩu và Xác nhẫn mật khẩu không khỊ';
         }
 
         if ($this->accountModel->getAccountByUsername($username)) {
-            $errors[] = 'Username đã tồn tại';
+            $errors[] = 'Tên tài khoản đã tồn tại';
         }
 
         if (!empty($errors)) {

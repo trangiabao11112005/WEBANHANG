@@ -207,7 +207,7 @@ class SecurityMiddleware
         }
 
         if ($_SESSION['attempt'] > 5) {
-            self::block("Too many login attempts!");
+            self::block("Quá nhiều nỗ lực đăng nhập!");
         }
     }
 

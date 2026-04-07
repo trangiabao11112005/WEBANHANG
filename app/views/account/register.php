@@ -17,13 +17,13 @@ echo "</ul>";
 <div class="col-sm-6 mb-3 mb-sm-0">
 <input type="text" class="form-control form-control-user"
 
-id="username" name="username" placeholder="username">
+id="username" name="username" placeholder="tên tài khoản">
 
 </div>
 <div class="col-sm-6">
 <input type="text" class="form-control form-control-user"
 
-id="fullname" name="fullname" placeholder="fullname">
+id="fullname" name="fullname" placeholder="họa và tên">
 
 </div>
 </div>
@@ -31,18 +31,18 @@ id="fullname" name="fullname" placeholder="fullname">
 <div class="col-sm-6 mb-3 mb-sm-0">
 <input type="password" class="form-control form-control-user"
 
-id="password" name="password" placeholder="password">
+id="password" name="password" placeholder="mật khẩu">
 
 </div>
 <div class="col-sm-6">
 <input type="password" class="form-control form-control-user"
-id="confirmpassword" name="confirmpassword" placeholder="confirmpassword">
+id="confirmpassword" name="confirmpassword" placeholder="xác nhẫn mật khẩu">
 
 </div>
 </div>
 <div class="form-group text-center">
 <button class="btn btn-primary btn-icon-split p-3">
-Register
+Đăng ký
 </button>
 </div>
 </form>

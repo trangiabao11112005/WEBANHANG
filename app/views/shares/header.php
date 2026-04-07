@@ -158,7 +158,7 @@ CATEGORY MENU
 
                     <li class="nav-item">
                         <a class="nav-link" href="/Admin/security">
-                            <i class="fa-solid fa-shield-alt"></i> Security
+                            <i class="fa-solid fa-shield-alt"></i> Bảo mật
                         </a>
                     </li>
 
@@ -180,7 +180,7 @@ CATEGORY MENU
                     if (SessionHelper::isLoggedIn()) {
                         echo "<a class='nav-link' href='/Product/'><i class='fa-solid fa-user'></i> " . $_SESSION['username'] . "</a>";
                     } else {
-                        echo "<a class='nav-link' href='/account/login'><i class='fa-solid fa-user'></i> Login</a>";
+                        echo "<a class='nav-link' href='/account/login'><i class='fa-solid fa-user'></i> Đăng nhập</a>";
                     }
                     ?>
 
@@ -190,7 +190,7 @@ CATEGORY MENU
 
                     <li class="nav-item">
                         <a class="nav-link" href="/account/logout">
-                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                            <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
                         </a>
                     </li>
 

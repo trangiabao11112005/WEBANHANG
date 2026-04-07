@@ -26,7 +26,7 @@ $action = isset($url[1]) && $url[1] != ''
 
 // Check controller
 if (!file_exists('app/controllers/' . $controllerName . '.php')) {
-    die('Controller not found');
+    die('Controller không tồn tại');
 }
 
 require_once 'app/controllers/' . $controllerName . '.php';
@@ -35,7 +35,7 @@ $controller = new $controllerName();
 
 // Check action
 if (!method_exists($controller, $action)) {
-    die('Action not found');
+    die('Hành động không tồn tại');
 }
 
 // Call action

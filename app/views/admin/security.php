@@ -3,8 +3,8 @@
 <div class="container mt-4">
     <div class="row">
         <div class="col-12">
-            <h2>Security Dashboard</h2>
-            <p>Monitor security threats and manage blocked IPs.</p>
+            <h2>Bảng điều khển Bảo mật</h2>
+            <p>Giám sát các mời đe dọa bảo mật và quản lý các địa chỉ IP bị chặn.</p>
         </div>
     </div>
 
@@ -12,7 +12,7 @@
         <div class="col-md-4 mb-3">
             <div class="card text-white bg-danger">
                 <div class="card-body">
-                    <h5 class="card-title">Total Attacks</h5>
+                    <h5 class="card-title">Tổng số tấn công</h5>
                     <p class="card-text display-4"><?php echo $securityStats['total_attacks']; ?></p>
                 </div>
             </div>
@@ -23,14 +23,14 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h5>Attacks by Type</h5>
+                    <h5>Tấn công theo loại</h5>
                 </div>
                 <div class="card-body">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Type</th>
-                                <th>Count</th>
+                                <th>Loại</th>
+                                <th>Số lượng</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,15 +49,15 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h5>Attacks by IP</h5>
+                    <h5>Tấn công theo IP</h5>
                 </div>
                 <div class="card-body">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>IP Address</th>
-                                <th>Count</th>
-                                <th>Action</th>
+                                <th>Địa chỉ IP</th>
+                                <th>Số lượng</th>
+                                <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -67,9 +67,9 @@
                                     <td><?php echo $count; ?></td>
                                     <td>
                                         <?php if (in_array($ip, $securityStats['blocked_ips'])): ?>
-                                            <button class="btn btn-success btn-sm unblock-ip" data-ip="<?php echo htmlspecialchars($ip); ?>">Unblock</button>
+                                            <button class="btn btn-success btn-sm unblock-ip" data-ip="<?php echo htmlspecialchars($ip); ?>">Bỏ chặn</button>
                                         <?php else: ?>
-                                            <button class="btn btn-danger btn-sm block-ip" data-ip="<?php echo htmlspecialchars($ip); ?>">Block</button>
+                                            <button class="btn btn-danger btn-sm block-ip" data-ip="<?php echo htmlspecialchars($ip); ?>">Chặn</button>
                                         <?php endif; ?>
                                     </td>
                                 </tr>
@@ -85,14 +85,14 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h5>Blocked IPs</h5>
+                    <h5>Các IP bị chặn</h5>
                 </div>
                 <div class="card-body">
                     <ul class="list-group">
                         <?php foreach ($securityStats['blocked_ips'] as $ip): ?>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <?php echo htmlspecialchars($ip); ?>
-                                <button class="btn btn-success btn-sm unblock-ip" data-ip="<?php echo htmlspecialchars($ip); ?>">Unblock</button>
+                                <button class="btn btn-success btn-sm unblock-ip" data-ip="<?php echo htmlspecialchars($ip); ?>">Bỏ chặn</button>
                             </li>
                         <?php endforeach; ?>
                     </ul>
@@ -105,16 +105,16 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h5>User Accounts</h5>
+                    <h5>Tài khoản người dùng</h5>
                 </div>
                 <div class="card-body">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Username</th>
-                                <th>Role</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                                <th>Tên tài khoản</th>
+                                <th>Vai trò</th>
+                                <th>Trạng thái</th>
+                                <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -124,16 +124,16 @@
                                     <td><?php echo htmlspecialchars($account['role']); ?></td>
                                     <td>
                                         <?php if (in_array($account['username'], $securityStats['blocked_accounts'])): ?>
-                                            <span class="badge badge-danger">Blocked</span>
+                                            <span class="badge badge-danger">Bị chặn</span>
                                         <?php else: ?>
-                                            <span class="badge badge-success">Active</span>
+                                            <span class="badge badge-success">Hoạt động</span>
                                         <?php endif; ?>
                                     </td>
                                     <td>
                                         <?php if (in_array($account['username'], $securityStats['blocked_accounts'])): ?>
-                                            <button class="btn btn-success btn-sm unblock-account" data-username="<?php echo htmlspecialchars($account['username']); ?>">Unblock</button>
+                                            <button class="btn btn-success btn-sm unblock-account" data-username="<?php echo htmlspecialchars($account['username']); ?>">Bỏ chặn</button>
                                         <?php else: ?>
-                                            <button class="btn btn-danger btn-sm block-account" data-username="<?php echo htmlspecialchars($account['username']); ?>">Block</button>
+                                            <button class="btn btn-danger btn-sm block-account" data-username="<?php echo htmlspecialchars($account['username']); ?>">Chặn</button>
                                         <?php endif; ?>
                                     </td>
                                 </tr>

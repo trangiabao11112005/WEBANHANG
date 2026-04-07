@@ -17,7 +17,7 @@ $total += $item['price'] * $item['quantity'];
 <h2><?php echo htmlspecialchars($item['name'], ENT_QUOTES, 'UTF-8'); ?></h2>
 
 <?php if ($item['image']): ?>
-<img src="/<?php echo $item['image']; ?>" alt="Product Image" style="max-width: 100px;">
+<img src="/<?php echo $item['image']; ?>" alt="Hình ánh sản phẩm" style="max-width: 100px;">
 <?php endif; ?>
 
 <p>Giá: <?php echo htmlspecialchars($item['price'], ENT_QUOTES, 'UTF-8'); ?> VND</p>
