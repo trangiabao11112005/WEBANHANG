@@ -1,0 +1,241 @@
+<?php include 'app/views/shares/header.php'; ?>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2>Security Dashboard</h2>
+            <p>Monitor security threats and manage blocked IPs.</p>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-danger">
+                <div class="card-body">
+                    <h5 class="card-title">Total Attacks</h5>
+                    <p class="card-text display-4"><?php echo $securityStats['total_attacks']; ?></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Attacks by Type</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($securityStats['attacks_by_type'] as $type => $count): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($type); ?></td>
+                                    <td><?php echo $count; ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Attacks by IP</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>IP Address</th>
+                                <th>Count</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($securityStats['attacks_by_ip'] as $ip => $count): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($ip); ?></td>
+                                    <td><?php echo $count; ?></td>
+                                    <td>
+                                        <?php if (in_array($ip, $securityStats['blocked_ips'])): ?>
+                                            <button class="btn btn-success btn-sm unblock-ip" data-ip="<?php echo htmlspecialchars($ip); ?>">Unblock</button>
+                                        <?php else: ?>
+                                            <button class="btn btn-danger btn-sm block-ip" data-ip="<?php echo htmlspecialchars($ip); ?>">Block</button>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Blocked IPs</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <?php foreach ($securityStats['blocked_ips'] as $ip): ?>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <?php echo htmlspecialchars($ip); ?>
+                                <button class="btn btn-success btn-sm unblock-ip" data-ip="<?php echo htmlspecialchars($ip); ?>">Unblock</button>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>User Accounts</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($accounts as $account): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($account['username']); ?></td>
+                                    <td><?php echo htmlspecialchars($account['role']); ?></td>
+                                    <td>
+                                        <?php if (in_array($account['username'], $securityStats['blocked_accounts'])): ?>
+                                            <span class="badge badge-danger">Blocked</span>
+                                        <?php else: ?>
+                                            <span class="badge badge-success">Active</span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <?php if (in_array($account['username'], $securityStats['blocked_accounts'])): ?>
+                                            <button class="btn btn-success btn-sm unblock-account" data-username="<?php echo htmlspecialchars($account['username']); ?>">Unblock</button>
+                                        <?php else: ?>
+                                            <button class="btn btn-danger btn-sm block-account" data-username="<?php echo htmlspecialchars($account['username']); ?>">Block</button>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Block IP
+    document.querySelectorAll('.block-ip').forEach(button => {
+        button.addEventListener('click', function() {
+            const ip = this.getAttribute('data-ip');
+            fetch('/Admin/blockIp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'ip=' + encodeURIComponent(ip)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            });
+        });
+    });
+
+    // Unblock IP
+    document.querySelectorAll('.unblock-ip').forEach(button => {
+        button.addEventListener('click', function() {
+            const ip = this.getAttribute('data-ip');
+            fetch('/Admin/unblockIp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'ip=' + encodeURIComponent(ip)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            });
+        });
+    });
+
+    // Block Account
+    document.querySelectorAll('.block-account').forEach(button => {
+        button.addEventListener('click', function() {
+            const username = this.getAttribute('data-username');
+            fetch('/Admin/blockAccount', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'username=' + encodeURIComponent(username)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            });
+        });
+    });
+
+    // Unblock Account
+    document.querySelectorAll('.unblock-account').forEach(button => {
+        button.addEventListener('click', function() {
+            const username = this.getAttribute('data-username');
+            fetch('/Admin/unblockAccount', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'username=' + encodeURIComponent(username)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            });
+        });
+    });
+});
+</script>
+
+<?php include 'app/views/shares/footer.php'; ?>
