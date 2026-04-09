@@ -24,8 +24,33 @@ class SecurityMiddleware
             session_start();
             return;
         }
+    }
 
-        // Nếu phiên đã tồn tại, không thay đổi cấu hình session.
+    private static function getStatusFile()
+    {
+        return __DIR__ . '/../../logs/security_status.json';
+    }
+
+    public static function isSecurityEnabled()
+    {
+        $statusFile = self::getStatusFile();
+        if (!file_exists($statusFile)) {
+            return true;
+        }
+
+        $data = json_decode(file_get_contents($statusFile), true);
+        if (!is_array($data) || !isset($data['enabled'])) {
+            return true;
+        }
+
+        return (bool) $data['enabled'];
+    }
+
+    public static function setSecurityEnabled($enabled)
+    {
+        $statusFile = self::getStatusFile();
+        $data = ['enabled' => (bool)$enabled];
+        file_put_contents($statusFile, json_encode($data, JSON_PRETTY_PRINT));
     }
 
     // ========================
@@ -33,6 +58,10 @@ class SecurityMiddleware
     // ========================
     private static function checkRequest()
     {
+        if (!self::isSecurityEnabled()) {
+            return;
+        }
+
         foreach ($_REQUEST as $key => $value) {
             if (is_array($value)) continue;
 
@@ -88,7 +117,19 @@ class SecurityMiddleware
     private static function block($message)
     {
         http_response_code(403);
-        die("🚫 Bị chặn bởi SecurityMiddleware: " . $message);
+        $safeMessage = htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
+        echo '<!DOCTYPE html>';
+        echo '<html lang="vi">';
+        echo '<head><meta charset="utf-8"><title>Cảnh báo bảo mật</title>';
+        echo '<style>body{font-family:Arial,sans-serif;background:#f8d7da;color:#842029;padding:40px;} .box{max-width:720px;margin:0 auto;background:#ffffff;padding:30px;border:1px solid #f5c2c7;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.05);} h1{margin-top:0;} p{line-height:1.6;}</style>';
+        echo '</head><body>';
+        echo '<div class="box">';
+        echo '<h1>🚨 Cảnh báo bảo mật</h1>';
+        echo '<p>' . $safeMessage . '</p>';
+        echo '<p>Nếu bạn không thực hiện hành động này, vui lòng liên hệ quản trị viên.</p>';
+        echo '</div>';
+        echo '</body></html>';
+        exit;
     }
 
     // ========================

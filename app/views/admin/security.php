@@ -4,7 +4,24 @@
     <div class="row">
         <div class="col-12">
             <h2>Bảng điều khển Bảo mật</h2>
-            <p>Giám sát các mời đe dọa bảo mật và quản lý các địa chỉ IP bị chặn.</p>
+            <p>Giám sát các mối đe dọa bảo mật và quản lý các địa chỉ IP bị chặn.</p>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+                    <div>
+                        <h5 class="card-title">Trạng thái hệ thống bảo mật</h5>
+                        <p class="card-text mb-0">Hệ thống bảo mật hiện đang: <strong><?php echo $securityEnabled ? 'BẬT' : 'TẮT'; ?></strong></p>
+                        <p class="text-muted mb-0">Chỉ quản trị viên có thể bật hoặc tắt tính năng này.</p>
+                    </div>
+                    <button id="toggle-security" class="btn <?php echo $securityEnabled ? 'btn-danger' : 'btn-success'; ?> mt-3 mt-md-0" data-enabled="<?php echo $securityEnabled ? '0' : '1'; ?>">
+                        <?php echo $securityEnabled ? 'Tắt hệ thống bảo mật' : 'Bật hệ thống bảo mật'; ?>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -235,6 +252,28 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+
+    const toggleButton = document.getElementById('toggle-security');
+    if (toggleButton) {
+        toggleButton.addEventListener('click', function() {
+            const enabled = this.getAttribute('data-enabled');
+            fetch('/Admin/toggleSecurity', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'enabled=' + encodeURIComponent(enabled)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            });
+        });
+    }
 });
 </script>
 

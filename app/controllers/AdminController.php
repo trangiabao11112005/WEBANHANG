@@ -73,7 +73,33 @@ class AdminController
     {
         $securityStats = $this->getSecurityStats();
         $accounts = $this->getAllAccounts();
+        $securityEnabled = SecurityMiddleware::isSecurityEnabled();
         include 'app/views/admin/security.php';
+    }
+
+    public function toggleSecurity()
+    {
+        header('Content-Type: application/json');
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            echo json_encode(['success' => false, 'message' => 'Yêu cầu không hợp lệ']);
+            return;
+        }
+
+        if (!isset($_POST['enabled'])) {
+            echo json_encode(['success' => false, 'message' => 'Trạng thái bảo mật không hợp lệ']);
+            return;
+        }
+
+        $enabled = $_POST['enabled'] === '1';
+        SecurityMiddleware::setSecurityEnabled($enabled);
+        LogHelper::log('SECURITY_TOGGLE', 'Admin ' . ($enabled ? 'bật' : 'tắt') . ' hệ thống bảo mật');
+
+        echo json_encode([
+            'success' => true,
+            'enabled' => $enabled,
+            'message' => 'Hệ thống bảo mật đã ' . ($enabled ? 'bật' : 'tắt')
+        ]);
     }
 
     private function getSecurityStats()
