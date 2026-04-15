@@ -2,6 +2,7 @@
 require_once 'app/config/database.php';
 require_once 'app/helpers/SessionHelper.php';
 require_once 'app/helpers/LogHelper.php';
+require_once 'app/helpers/SecurityMiddleware.php';
 
 class AdminController
 {

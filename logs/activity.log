@@ -28,3 +28,7 @@
 2026-04-07 14:10:42 | IP: ::1 | User: 123 | Action: LOGIN | Details: Successful login
 2026-04-07 14:15:12 | IP: ::1 | User: 123 | Action: LOGIN | Details: Successful login
 2026-04-07 14:16:28 | IP: ::1 | User: 456 | Action: LOGIN | Details: Successful login
+2026-04-09 16:15:11 | IP: ::1 | User: 123 | Action: LOGIN | Details: Đăng nhập thành công
+2026-04-09 16:15:13 | IP: ::1 | User: 123 | Action: VIEW_DASHBOARD | Details: Admin xem bảng điều khển
+2026-04-09 16:15:24 | IP: ::1 | User: 123 | Action: VIEW_PRODUCTS | Details: Xem tất cả sản phẩm
+2026-04-09 16:15:36 | IP: ::1 | User: 123 | Action: LOGOUT | Details: User logged out
