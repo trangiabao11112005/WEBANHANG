@@ -24,6 +24,9 @@ class AccountController
     // =========================
     public function login()
     {
+        $securityEnabled = SecurityMiddleware::isSecurityEnabled();
+        $message = '';
+        $attemptUser = '';
         include 'app/views/account/login.php';
     }
 
@@ -41,15 +44,32 @@ class AccountController
 
         $username = trim($_POST['username'] ?? '');
         $password = $_POST['password'] ?? '';
+        $securityEnabled = SecurityMiddleware::isSecurityEnabled();
+        $message = '';
+        $attemptUser = $username;
 
         if ($username === '' || $password === '') {
-            echo "❌ Vui lòng nhập đầy đủ thông tin";
+            $message = "❌ Vui lòng nhập đầy đủ thông tin";
+            include 'app/views/account/login.php';
             return;
         }
 
-        $user = $this->accountModel->getAccountByUsername($username);
+        if ($securityEnabled) {
+            $user = $this->accountModel->getAccountByUsername($username);
+        } else {
+            // VULNERABLE login path for demonstration when security is disabled
+            $query = "SELECT * FROM account WHERE username = '" . $username . "' LIMIT 0,1";
+            try {
+                $stmt = $this->db->query($query);
+                $user = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
+            } catch (PDOException $e) {
+                echo "❌ SQL Error: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "<br>";
+                echo "<strong>Query:</strong> " . htmlspecialchars($query, ENT_QUOTES, 'UTF-8');
+                return;
+            }
+        }
 
-        if ($user && password_verify($password, $user['password'])) {
+        if ($user && ($securityEnabled ? password_verify($password, $user['password']) : true)) {
             SecurityMiddleware::resetAttempt();
             session_regenerate_id(true);
 
@@ -64,7 +84,8 @@ class AccountController
 
         SecurityMiddleware::increaseAttempt();
         LogHelper::log('LOGIN_FAILED', 'Cố găng đăng nhập thất bại cho tên tài khoản: ' . $username);
-        echo "❌ Sai tài khoản hoặc mật khẩu";
+        $message = "❌ Sai tài khoản hoặc mật khẩu";
+        include 'app/views/account/login.php';
     }
 
     // =========================

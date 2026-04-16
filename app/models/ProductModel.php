@@ -32,7 +32,7 @@ WHERE p.id = :id";
         $result = $stmt->fetch(PDO::FETCH_OBJ);
         return $result;
     }
-    public function addProduct($name, $description, $price, $category_id, $image)
+    public function addProduct($name, $description, $price, $category_id, $image, $useSecurity = true)
     {
         $errors = [];
         if (empty($name)) {
@@ -47,19 +47,26 @@ WHERE p.id = :id";
         if (count($errors) > 0) {
             return $errors;
         }
-        $query = "INSERT INTO " . $this->table_name . " (name, description, price,
+
+        if ($useSecurity) {
+            $query = "INSERT INTO " . $this->table_name . " (name, description, price,
 category_id, image) VALUES (:name, :description, :price, :category_id, :image)";
-        $stmt = $this->conn->prepare($query);
-        $name = htmlspecialchars(strip_tags($name));
-        $description = htmlspecialchars(strip_tags($description));
-        $price = htmlspecialchars(strip_tags($price));
-        $category_id = htmlspecialchars(strip_tags($category_id));
-        $image = htmlspecialchars(strip_tags($image));
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':description', $description);
-        $stmt->bindParam(':price', $price);
-        $stmt->bindParam(':category_id', $category_id);
-        $stmt->bindParam(':image', $image);
+            $stmt = $this->conn->prepare($query);
+            $name = htmlspecialchars(strip_tags($name));
+            $description = htmlspecialchars(strip_tags($description));
+            $price = htmlspecialchars(strip_tags($price));
+            $category_id = htmlspecialchars(strip_tags($category_id));
+            $image = htmlspecialchars(strip_tags($image));
+            $stmt->bindParam(':name', $name);
+            $stmt->bindParam(':description', $description);
+            $stmt->bindParam(':price', $price);
+            $stmt->bindParam(':category_id', $category_id);
+            $stmt->bindParam(':image', $image);
+        } else {
+            $query = "INSERT INTO " . $this->table_name . " (name, description, price, category_id, image) VALUES ('" . $name . "', '" . $description . "', '" . $price . "', '" . $category_id . "', '" . $image . "')";
+            $stmt = $this->conn->prepare($query);
+        }
+
         if ($stmt->execute()) {
             return true;
         }
@@ -72,23 +79,30 @@ category_id, image) VALUES (:name, :description, :price, :category_id, :image)";
         $description,
         $price,
         $category_id,
-        $image
+        $image,
+        $useSecurity = true
     ) {
-        $query = "UPDATE " . $this->table_name . " SET name=:name,
+        if ($useSecurity) {
+            $query = "UPDATE " . $this->table_name . " SET name=:name,
 description=:description, price=:price, category_id=:category_id, image=:image WHERE
 id=:id";
-        $stmt = $this->conn->prepare($query);
-        $name = htmlspecialchars(strip_tags($name));
-        $description = htmlspecialchars(strip_tags($description));
-        $price = htmlspecialchars(strip_tags($price));
-        $category_id = htmlspecialchars(strip_tags($category_id));
-        $image = htmlspecialchars(strip_tags($image));
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':description', $description);
-        $stmt->bindParam(':price', $price);
-        $stmt->bindParam(':category_id', $category_id);
-        $stmt->bindParam(':image', $image);
+            $stmt = $this->conn->prepare($query);
+            $name = htmlspecialchars(strip_tags($name));
+            $description = htmlspecialchars(strip_tags($description));
+            $price = htmlspecialchars(strip_tags($price));
+            $category_id = htmlspecialchars(strip_tags($category_id));
+            $image = htmlspecialchars(strip_tags($image));
+            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':name', $name);
+            $stmt->bindParam(':description', $description);
+            $stmt->bindParam(':price', $price);
+            $stmt->bindParam(':category_id', $category_id);
+            $stmt->bindParam(':image', $image);
+        } else {
+            $query = "UPDATE " . $this->table_name . " SET name='" . $name . "', description='" . $description . "', price='" . $price . "', category_id='" . $category_id . "', image='" . $image . "' WHERE id='" . $id . "'";
+            $stmt = $this->conn->prepare($query);
+        }
+
         if ($stmt->execute()) {
             return true;
         }
@@ -119,6 +133,19 @@ id=:id";
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
+    public function getProductsByCategoryUnsafe($category_id)
+    {
+        $query = "SELECT p.id, p.name, p.description, p.price, p.image, c.name as category_name
+              FROM " . $this->table_name . " p
+              LEFT JOIN category c ON p.category_id = c.id
+              WHERE p.category_id = '" . $category_id . "'";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
     public function searchProducts($query)
     {
         $query = "%" . $query . "%";
@@ -128,6 +155,18 @@ id=:id";
                 WHERE p.name LIKE :query OR p.description LIKE :query";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':query', $query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function searchProductsUnsafe($query)
+    {
+        $query = "%" . $query . "%";
+        $sql = "SELECT p.id, p.name, p.description, p.price, p.image, c.name as category_name
+                FROM " . $this->table_name . " p
+                LEFT JOIN category c ON p.category_id = c.id
+                WHERE p.name LIKE '" . $query . "' OR p.description LIKE '" . $query . "'";
+        $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }

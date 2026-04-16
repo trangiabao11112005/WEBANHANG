@@ -17,10 +17,10 @@
 
 <?php if ($product->image): ?>
 
-<img src="/<?php echo htmlspecialchars($product->image); ?>"
+<img src="/<?php echo SecurityMiddleware::isSecurityEnabled() ? htmlspecialchars($product->image) : $product->image; ?>"
 class="img-fluid rounded shadow-sm"
 style="max-height:350px; object-fit:cover;"
-alt="<?php echo htmlspecialchars($product->name); ?>">
+alt="<?php echo SecurityMiddleware::isSecurityEnabled() ? htmlspecialchars($product->name) : $product->name; ?>">
 
 <?php else: ?>
 
@@ -37,11 +37,19 @@ alt="Không có ảnh">
 <div class="col-md-6">
 
 <h3 class="fw-bold mb-3">
-<?php echo htmlspecialchars($product->name); ?>
+<?php if (SecurityMiddleware::isSecurityEnabled()): ?>
+    <?php echo htmlspecialchars($product->name); ?>
+<?php else: ?>
+    <?php echo $product->name; ?>
+<?php endif; ?>
 </h3>
 
 <p class="text-muted">
-<?php echo nl2br(htmlspecialchars($product->description)); ?>
+<?php if (SecurityMiddleware::isSecurityEnabled()): ?>
+    <?php echo nl2br(htmlspecialchars($product->description)); ?>
+<?php else: ?>
+    <?php echo nl2br($product->description); ?>
+<?php endif; ?>
 </p>
 
 <p class="text-danger fw-bold fs-4">
@@ -53,7 +61,7 @@ alt="Không có ảnh">
 
 <span class="badge bg-secondary">
 <?php echo !empty($product->category_name)
-? htmlspecialchars($product->category_name)
+? (SecurityMiddleware::isSecurityEnabled() ? htmlspecialchars($product->category_name) : $product->category_name)
 : 'Chưa có danh mục'; ?>
 </span>
 

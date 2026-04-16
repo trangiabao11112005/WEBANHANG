@@ -35,27 +35,34 @@ class CategoryModel
     }
 
     // Thêm danh mục
-    public function createCategory($name)
+    public function createCategory($name, $useSecurity = true)
     {
-        $query = "INSERT INTO " . $this->table_name . " (name) VALUES (:name)";
-
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':name', $name);
+        if ($useSecurity) {
+            $query = "INSERT INTO " . $this->table_name . " (name) VALUES (:name)";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':name', $name);
+        } else {
+            $query = "INSERT INTO " . $this->table_name . " (name) VALUES ('" . $name . "')";
+            $stmt = $this->conn->prepare($query);
+        }
 
         return $stmt->execute();
     }
 
     // Cập nhật danh mục
-    public function updateCategory($id, $name)
+    public function updateCategory($id, $name, $useSecurity = true)
     {
-        $query = "UPDATE " . $this->table_name . " 
+        if ($useSecurity) {
+            $query = "UPDATE " . $this->table_name . " 
                   SET name = :name 
                   WHERE id = :id";
-
-        $stmt = $this->conn->prepare($query);
-
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':name', $name);
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':name', $name);
+        } else {
+            $query = "UPDATE " . $this->table_name . " SET name = '" . $name . "' WHERE id = '" . $id . "'";
+            $stmt = $this->conn->prepare($query);
+        }
 
         return $stmt->execute();
     }

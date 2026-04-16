@@ -4,6 +4,7 @@ require_once('app/models/ProductModel.php');
 require_once('app/models/CategoryModel.php');
 require_once('app/models/OrderModel.php');
 require_once('app/helpers/SessionHelper.php');
+require_once('app/helpers/SecurityMiddleware.php');
 require_once('app/helpers/LogHelper.php');
 
 class ProductController {
@@ -31,7 +32,11 @@ class ProductController {
         $categories = $categoryModel->getCategories();
 
         if(isset($_GET['category_id']) && $_GET['category_id'] != ''){
-            $products = $this->productModel->getProductsByCategory($_GET['category_id']);
+            if(SecurityMiddleware::isSecurityEnabled()){
+                $products = $this->productModel->getProductsByCategory($_GET['category_id']);
+            } else {
+                $products = $this->productModel->getProductsByCategoryUnsafe($_GET['category_id']);
+            }
             LogHelper::log('VIEW_PRODUCTS', 'Xem sản phẩm theo danh mục: ' . $_GET['category_id']);
         }else{
             $products = $this->productModel->getProducts();
@@ -87,12 +92,14 @@ class ProductController {
                 $image = "";
             }
 
+            $securityEnabled = SecurityMiddleware::isSecurityEnabled();
             $result = $this->productModel->addProduct(
                 $name,
                 $description,
                 $price,
                 $category_id,
-                $image
+                $image,
+                $securityEnabled
             );
 
             if(is_array($result)){
@@ -142,13 +149,15 @@ class ProductController {
                 $image = $_POST['existing_image'];
             }
 
+            $securityEnabled = SecurityMiddleware::isSecurityEnabled();
             $edit = $this->productModel->updateProduct(
                 $id,
                 $name,
                 $description,
                 $price,
                 $category_id,
-                $image
+                $image,
+                $securityEnabled
             );
 
             if($edit){
@@ -395,7 +404,11 @@ if(!isset($_SESSION['cart'][$username]) || empty($_SESSION['cart'][$username])){
     {
         if (isset($_GET['q']) && !empty($_GET['q'])) {
             $query = $_GET['q'];
-            $products = $this->productModel->searchProducts($query);
+            if (SecurityMiddleware::isSecurityEnabled()) {
+                $products = $this->productModel->searchProducts($query);
+            } else {
+                $products = $this->productModel->searchProductsUnsafe($query);
+            }
             $categories = (new CategoryModel($this->db))->getCategories();
             LogHelper::log('SEARCH_PRODUCTS', 'Tìm kiếm: ' . $query);
             require_once 'app/views/product/list.php';

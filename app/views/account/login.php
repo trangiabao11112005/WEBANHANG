@@ -1,62 +1,67 @@
 <?php include 'app/views/shares/header.php'; ?>
-<section class="vh-100 gradient-custom">
-    <div class="container py-5 h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
 
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                    <div class="card-body p-5 text-center">
-                        <form action="/account/checklogin" method="post">
+<section class="vh-100 d-flex align-items-center" style="background-color: #f2f2f5;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-5">
+                <div class="card shadow-sm border-0 rounded-4">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <h3 class="fw-bold">Đăng nhập</h3>
+                            <p class="text-muted mb-0">Nhập tài khoản và mật khẩu để tiếp tục.</p>
+                        </div>
 
-                            <div class="mb-md-5 mt-md-4 pb-5">
-                                <h2 class="fw-bold mb-2 text-uppercase">Đăng nhập</h2>
-                                <p class="text-white-50 mb-5">Vui lòng nhập tài khoản và mật khẩu!</p>
-                                <div class="form-outline form-white mb-4">
-                                    <input type="hidden" name="csrf"
-                                        value="<?= SecurityMiddleware::generateCSRF(); ?>">
-                                    <input type="text" name="username" class="form-control form-control-
-lg" />
-
-                                    <label class="form-label" for="typeEmailX">Tên tài khoản</label>
-                                </div>
-                                <div class="form-outline form-white mb-4">
-
-                                    <input type="password" name="password" class="form-control form-
-control-lg" />
-
-                                    <label class="form-label" for="typePasswordX">Mật khẩu</label>
-                                </div>
-                                <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Quên
-
-                                        mật khẩu?</a></p>
-
-                                <button class="btn btn-outline-light btn-lg px-5"
-
-                                    type="submit">Đăng nhập</button>
-
-                                <div class="d-flex justify-content-center text-center mt-4 pt-1">
-
-                                    <a href="#!" class="text-white"><i class="fab fa-facebook-f fa-
-lg"></i></a>
-
-                                    <a href="#!" class="text-white"><i class="fab fa-twitter fa-lg mx-4
-
-px-2"></i></a>
-
-                                    <a href="#!" class="text-white"><i class="fab fa-google fa-
-lg"></i></a>
-
-                                </div>
+                        <?php if ($message !== ''): ?>
+                            <div class="alert alert-danger" role="alert">
+                                <?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?>
                             </div>
-                            <div>
-                                <p class="mb-0">Chưa có tài khoản? <a href="
+                        <?php endif; ?>
 
-/account/register " class="text-white-50 fw-bold">Đăng ký</a>
+                        <?php if (!SecurityMiddleware::isSecurityEnabled()): ?>
+                            <div class="alert alert-warning" role="alert">
+                                <strong>Cảnh báo:</strong> Bảo mật đang tắt. Mẫu đăng nhập này dễ bị SQLi và XSS.
+                                <br>
+                                Thử: <code>admin' OR '1'='1</code> hoặc <code>&lt;script&gt;alert('XSS')&lt;/script&gt;</code>
+                            </div>
+                        <?php endif; ?>
 
-                                </p>
+                        <form action="/account/checklogin" method="post" autocomplete="off">
+                            <input type="hidden" name="csrf" value="<?= SecurityMiddleware::generateCSRF(); ?>">
+
+                            <div class="mb-3">
+                                <label for="usernameInput" class="form-label">Tên tài khoản</label>
+                                <input id="usernameInput" type="text" name="username" class="form-control form-control-lg" placeholder="Tên tài khoản" value="<?php echo htmlspecialchars($attemptUser ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="passwordInput" class="form-label">Mật khẩu</label>
+                                <input id="passwordInput" type="password" name="password" class="form-control form-control-lg" placeholder="Mật khẩu">
+                            </div>
+
+                            <?php if (!SecurityMiddleware::isSecurityEnabled() && !empty($attemptUser)): ?>
+                                <div class="alert alert-secondary" role="alert">
+                                    <strong>Unsafe reflection:</strong>
+                                    <div id="unsafe-login-reflection" class="mt-2"></div>
+                                </div>
+                                <script>
+                                    var div = document.getElementById('unsafe-login-reflection');
+                                    div.innerHTML = <?php echo json_encode($attemptUser); ?>;
+                                    var scripts = div.getElementsByTagName('script');
+                                    for (var i = 0; i < scripts.length; i++) {
+                                        eval(scripts[i].textContent);
+                                    }
+                                </script>
+                            <?php endif; ?>
+
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <a href="#!" class="text-decoration-none">Quên mật khẩu?</a>
+                                <button type="submit" class="btn btn-primary btn-lg">Đăng nhập</button>
                             </div>
                         </form>
 
+                        <div class="text-center pt-3 border-top">
+                            <p class="mb-2 text-muted">Chưa có tài khoản? <a href="/account/register" class="text-decoration-none">Đăng ký</a></p>
+                        </div>
                     </div>
                 </div>
             </div>

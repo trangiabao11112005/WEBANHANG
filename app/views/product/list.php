@@ -136,11 +136,19 @@
                             <div class="card-body d-flex flex-column">
 
                                 <h5 class="card-title">
-                                    <?php echo htmlspecialchars($product->name); ?>
+                                    <?php if (SecurityMiddleware::isSecurityEnabled()): ?>
+                                        <?php echo htmlspecialchars($product->name); ?>
+                                    <?php else: ?>
+                                        <?php echo $product->name; ?>
+                                    <?php endif; ?>
                                 </h5>
 
                                 <p class="card-text text-muted small">
-                                    <?php echo htmlspecialchars($product->description); ?>
+                                    <?php if (SecurityMiddleware::isSecurityEnabled()): ?>
+                                        <?php echo htmlspecialchars($product->description); ?>
+                                    <?php else: ?>
+                                        <?php echo $product->description; ?>
+                                    <?php endif; ?>
                                 </p>
 
                                 <p class="fw-bold text-danger mt-auto">
@@ -150,7 +158,11 @@
                                 <p class="small">
                                     Danh mục:
                                     <span class="badge bg-secondary">
-                                        <?php echo htmlspecialchars($product->category_name); ?>
+                                        <?php if (SecurityMiddleware::isSecurityEnabled()): ?>
+                                            <?php echo htmlspecialchars($product->category_name); ?>
+                                        <?php else: ?>
+                                            <?php echo $product->category_name; ?>
+                                        <?php endif; ?>
                                     </span>
                                 </p>
 

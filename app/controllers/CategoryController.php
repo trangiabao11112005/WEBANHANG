@@ -1,6 +1,7 @@
 <?php
 require_once('app/config/database.php');
 require_once('app/models/CategoryModel.php');
+require_once('app/helpers/SecurityMiddleware.php');
 
 class CategoryController
 {
@@ -40,7 +41,8 @@ class CategoryController
                 return;
             }
 
-            $this->categoryModel->createCategory($name);
+            $useSecurity = SecurityMiddleware::isSecurityEnabled();
+            $this->categoryModel->createCategory($name, $useSecurity);
 
             header("Location: /Category/list");
             exit;
@@ -75,7 +77,8 @@ class CategoryController
                 return;
             }
 
-            $this->categoryModel->updateCategory($id, $name);
+            $useSecurity = SecurityMiddleware::isSecurityEnabled();
+            $this->categoryModel->updateCategory($id, $name, $useSecurity);
 
             header("Location: /Category/list");
             exit;

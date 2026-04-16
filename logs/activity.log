@@ -32,3 +32,42 @@
 2026-04-09 16:15:13 | IP: ::1 | User: 123 | Action: VIEW_DASHBOARD | Details: Admin xem bảng điều khển
 2026-04-09 16:15:24 | IP: ::1 | User: 123 | Action: VIEW_PRODUCTS | Details: Xem tất cả sản phẩm
 2026-04-09 16:15:36 | IP: ::1 | User: 123 | Action: LOGOUT | Details: User logged out
+2026-04-16 16:35:10 | IP: ::1 | User: 123 | Action: LOGIN | Details: Đăng nhập thành công
+2026-04-16 16:35:14 | IP: ::1 | User: 123 | Action: SECURITY_TOGGLE | Details: Admin tắt hệ thống bảo mật
+2026-04-16 16:36:01 | IP: ::1 | User: guest | Action: LOGIN_FAILED | Details: Cố găng đăng nhập thất bại cho tên tài khoản: 123
+2026-04-16 16:36:08 | IP: ::1 | User: guest | Action: LOGIN_FAILED | Details: Cố găng đăng nhập thất bại cho tên tài khoản: 123
+2026-04-16 16:36:13 | IP: ::1 | User: guest | Action: LOGIN_FAILED | Details: Cố găng đăng nhập thất bại cho tên tài khoản: 123
+2026-04-16 16:36:20 | IP: ::1 | User: guest | Action: LOGIN_FAILED | Details: Cố găng đăng nhập thất bại cho tên tài khoản: 123
+2026-04-16 16:36:25 | IP: ::1 | User: guest | Action: SEARCH_PRODUCTS | Details: Tìm kiếm trống
+2026-04-16 16:36:25 | IP: ::1 | User: guest | Action: VIEW_PRODUCTS | Details: Xem tất cả sản phẩm
+2026-04-16 16:38:05 | IP: ::1 | User: guest | Action: LOGIN_FAILED | Details: Cố găng đăng nhập thất bại cho tên tài khoản: ' OR 1=1 --
+2026-04-16 16:38:26 | IP: ::1 | User: guest | Action: SEARCH_PRODUCTS | Details: Tìm kiếm: <script>alert(1)</script>
+2026-04-16 16:38:36 | IP: ::1 | User: guest | Action: VIEW_PRODUCTS | Details: Xem sản phẩm theo danh mục: 3
+2026-04-16 16:38:37 | IP: ::1 | User: guest | Action: VIEW_PRODUCTS | Details: Xem sản phẩm theo danh mục: 5
+2026-04-16 16:38:39 | IP: ::1 | User: guest | Action: VIEW_PRODUCTS | Details: Xem sản phẩm theo danh mục: 4
+2026-04-16 16:38:40 | IP: ::1 | User: guest | Action: VIEW_PRODUCTS | Details: Xem sản phẩm theo danh mục: 2
+2026-04-16 16:38:41 | IP: ::1 | User: guest | Action: VIEW_PRODUCTS | Details: Xem sản phẩm theo danh mục: 3
+2026-04-16 16:38:42 | IP: ::1 | User: guest | Action: VIEW_PRODUCTS | Details: Xem sản phẩm theo danh mục: 5
+2026-04-16 16:38:48 | IP: ::1 | User: 123 | Action: LOGIN | Details: Đăng nhập thành công
+2026-04-16 16:38:54 | IP: ::1 | User: 123 | Action: VIEW_DASHBOARD | Details: Admin xem bảng điều khển
+2026-04-16 16:40:21 | IP: ::1 | User: 123 | Action: LOGOUT | Details: User logged out
+2026-04-16 16:40:39 | IP: ::1 | User: guest | Action: LOGIN_FAILED | Details: Cố găng đăng nhập thất bại cho tên tài khoản: ' OR 1=1#
+2026-04-16 16:44:35 | IP: ::1 | User: guest | Action: SEARCH_PRODUCTS | Details: Tìm kiếm: <script>alert('XSS')</script>
+2026-04-16 16:44:41 | IP: ::1 | User: guest | Action: VIEW_PRODUCTS | Details: Xem tất cả sản phẩm
+2026-04-16 16:44:46 | IP: ::1 | User: guest | Action: VIEW_PRODUCT | Details: Xem sản phẩm ID: 9
+2026-04-16 16:45:04 | IP: ::1 | User: 456 | Action: LOGIN | Details: Đăng nhập thành công
+2026-04-16 16:45:07 | IP: ::1 | User: 456 | Action: VIEW_PRODUCTS | Details: Xem tất cả sản phẩm
+2026-04-16 16:45:13 | IP: ::1 | User: 456 | Action: VIEW_PRODUCTS | Details: Xem tất cả sản phẩm
+2026-04-16 16:45:15 | IP: ::1 | User: 456 | Action: ADD_TO_CART | Details: Thêm sản phẩm vào giỏ hàng ID: 13
+2026-04-16 16:45:15 | IP: ::1 | User: 456 | Action: VIEW_PRODUCTS | Details: Xem tất cả sản phẩm
+2026-04-16 16:45:30 | IP: ::1 | User: 456 | Action: CHECKOUT | Details: Đơn hàng được đặt thành công, Mã đơn hàng: 1
+2026-04-16 16:45:34 | IP: ::1 | User: 456 | Action: VIEW_PRODUCTS | Details: Xem tất cả sản phẩm
+2026-04-16 16:46:51 | IP: ::1 | User: 456 | Action: VIEW_PRODUCTS | Details: Xem tất cả sản phẩm
+2026-04-16 16:50:34 | IP: ::1 | User: 456 | Action: LOGOUT | Details: User logged out
+2026-04-16 16:56:01 | IP: ::1 | User: 123 | Action: VIEW_PRODUCTS | Details: Xem tất cả sản phẩm
+2026-04-16 16:56:29 | IP: ::1 | User: 123 | Action: LOGOUT | Details: User logged out
+2026-04-16 17:48:47 | IP: ::1 | User: 123 | Action: LOGIN | Details: Đăng nhập thành công
+2026-04-16 17:56:57 | IP: ::1 | User: guest | Action: VIEW_PRODUCTS | Details: Xem tất cả sản phẩm
+2026-04-16 17:58:14 | IP: ::1 | User: Admin | Action: LOGIN | Details: Đăng nhập thành công
+2026-04-16 18:07:49 | IP: ::1 | User: Admin | Action: LOGOUT | Details: User logged out
+2026-04-16 18:19:49 | IP: ::1 | User: guest | Action: VIEW_PRODUCTS | Details: Xem tất cả sản phẩm
